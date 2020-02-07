@@ -8,7 +8,8 @@ class TelegramLocation
      * @var array Params payload.
      */
     public $payload = [];
-
+    public $successFunction;
+    
     /**
      * @param null $latitude
      * @param null $longitude
@@ -18,6 +19,18 @@ class TelegramLocation
     public static function create($latitude = null, $longitude = null)
     {
         return new static($latitude, $longitude);
+    }
+
+    public function onSuccess($function)
+    {
+        $this->successFunction = $function;
+
+        return $this;
+    }
+
+    public function success($response){
+        if ($this->successFunction instanceof \Closure)
+            call_user_func($this->successFunction, $response);
     }
 
     /**

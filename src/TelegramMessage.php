@@ -9,6 +9,7 @@ class TelegramMessage
      */
     public $payload = [];
 
+    public $successFunction;
     /**
      * @var array Inline Keyboard Buttons.
      */
@@ -22,6 +23,18 @@ class TelegramMessage
     public static function create($content = '')
     {
         return new static($content);
+    }
+
+    public function onSuccess($function)
+    {
+        $this->successFunction = $function;
+
+        return $this;
+    }
+
+    public function success($response){
+        if ($this->successFunction instanceof \Closure)
+            call_user_func($this->successFunction, $response);
     }
 
     /**
