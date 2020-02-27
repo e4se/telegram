@@ -110,15 +110,16 @@ class TelegramFile
     /**
      * Add an inline button.
      *
-     * @param string $text
-     * @param string $url
+     * @param array $button Associative array of button metadata:
+     *                      "text" - text of button,
+     *                      "url" - url or "callback_data" - callback_data
      * @param int   $columns
      *
      * @return $this
      */
-    public function button($text, $url, $columns = 2)
+    public function button($button, $columns = 2)
     {
-        $this->buttons[] = compact('text', 'url');
+        $this->buttons[] = $button;
 
         $replyMarkup['inline_keyboard'] = array_chunk($this->buttons, $columns);
         $this->payload['reply_markup'] = json_encode($replyMarkup);
