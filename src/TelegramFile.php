@@ -117,11 +117,11 @@ class TelegramFile
      *
      * @return $this
      */
-    public function button($button, $columns = 2)
+    public function button($button)
     {
         $this->buttons[] = $button;
 
-        $replyMarkup['inline_keyboard'] = array_chunk($this->buttons, $columns);
+        $replyMarkup['inline_keyboard'] = $this->buttons;
         $this->payload['reply_markup'] = json_encode($replyMarkup);
 
         return $this;
