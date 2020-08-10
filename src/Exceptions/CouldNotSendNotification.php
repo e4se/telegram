@@ -6,6 +6,12 @@ use GuzzleHttp\Exception\ClientException;
 
 class CouldNotSendNotification extends \Exception
 {
+    public $params;
+
+    public function setParams($params) {
+        $this->params = $params;
+        return $this;
+    }
     /**
      * Thrown when there's a bad request and an error is responded.
      *
@@ -18,12 +24,13 @@ class CouldNotSendNotification extends \Exception
         $statusCode = $exception->getResponse()->getStatusCode();
 
         $description = 'no description given';
-
+        $params = [];
         if ($result = json_decode($exception->getResponse()->getBody())) {
             $description = $result->description ?: $description;
+            $params = (array) $result->parameters;
         }
 
-        return new static("Telegram responded with an error `{$statusCode} - {$description}`");
+        return (new CouldNotSendNotification("Telegram responded with an error `{$statusCode} - {$description}`"))->setParams($params);
     }
 
     /**

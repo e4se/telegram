@@ -9,7 +9,7 @@ class TelegramLocation
      */
     public $payload = [];
     public $successFunction;
-    
+    public $failureFunction;
     /**
      * @param null $latitude
      * @param null $longitude
@@ -32,6 +32,19 @@ class TelegramLocation
         if ($this->successFunction instanceof \Closure)
             call_user_func($this->successFunction, $response);
     }
+    
+    public function onFailure($function)
+    {
+        $this->failureFunction = $function;
+
+        return $this;
+    }
+
+    public function failure($response){
+        if ($this->failureFunction instanceof \Closure)
+            call_user_func($this->failureFunction, $response);
+    }
+
 
     /**
      * Message constructor.

@@ -43,30 +43,35 @@ class TelegramChannel
             $message->to($to);
         }
 
-        if(isset($message->payload['text']) && $message->payload['text'])
-        {
-            $params = $message->toArray();
-            $response = $this->telegram->sendMessage($params);
-        }
-        elseif (isset($message->payload['latitude']) && isset($message->payload['longitude'])) {
-            $params = $message->toArray();
-            $response = $this->telegram->sendLocation($params);
-        }
-        else
-        {
-            if(isset($message->payload['file']))
-            {
-                $params = $message->toMultipart();
-                $response = $this->telegram->sendFile($params, $message->type, true);
-            }
-            else
-            {
-                $params = $message->toArray();
-                $response = $this->telegram->sendFile($params, $message->type);
-            }
-        }
-        if($response){
-            $message->success(json_decode($response->getBody()->getContents()));
+		try {
+	        if(isset($message->payload['text']) && $message->payload['text'])
+	        {
+	            $params = $message->toArray();
+	            $response = $this->telegram->sendMessage($params);
+	        }
+	        elseif (isset($message->payload['latitude']) && isset($message->payload['longitude'])) {
+	            $params = $message->toArray();
+	            $response = $this->telegram->sendLocation($params);
+	        }
+	        else
+	        {
+	            if(isset($message->payload['file']))
+	            {
+	                $params = $message->toMultipart();
+	                $response = $this->telegram->sendFile($params, $message->type, true);
+	            }
+	            else
+	            {
+	                $params = $message->toArray();
+	                $response = $this->telegram->sendFile($params, $message->type);
+	            }
+	        }
+	        if($response){
+	            $message->success(json_decode($response->getBody()->getContents()));
+	        }
+        } catch(\Exception $e){ 
+            $message->failure($e);
+            throw $e;
         }
     }
 }

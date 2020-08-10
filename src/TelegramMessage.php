@@ -10,6 +10,7 @@ class TelegramMessage
     public $payload = [];
 
     public $successFunction;
+    public $failureFunction;
     /**
      * @var array Inline Keyboard Buttons.
      */
@@ -35,6 +36,18 @@ class TelegramMessage
     public function success($response){
         if ($this->successFunction instanceof \Closure)
             call_user_func($this->successFunction, $response);
+    }
+    
+    public function onFailure($function)
+    {
+        $this->failureFunction = $function;
+
+        return $this;
+    }
+
+    public function failure($response){
+        if ($this->failureFunction instanceof \Closure)
+            call_user_func($this->failureFunction, $response);
     }
 
     /**
