@@ -8,7 +8,8 @@ class CouldNotSendNotification extends \Exception
 {
     public $params;
 
-    public function setParams($params) {
+    public function setParams($params)
+    {
         $this->params = $params;
         return $this;
     }
@@ -27,7 +28,11 @@ class CouldNotSendNotification extends \Exception
         $params = [];
         if ($result = json_decode($exception->getResponse()->getBody())) {
             $description = $result->description ?: $description;
-            $params = (array) $result->parameters;
+            if (isset($result->parameters)) {
+                $params = (array) $result->parameters;
+            } else {
+                $params = [];
+            }
         }
 
         return (new CouldNotSendNotification("Telegram responded with an error `{$statusCode} - {$description}`"))->setParams($params);
@@ -50,7 +55,7 @@ class CouldNotSendNotification extends \Exception
      *
      * @return static
      */
-     public static function couldNotCommunicateWithTelegram($message)
+    public static function couldNotCommunicateWithTelegram($message)
     {
         return new static("The communication with Telegram failed. `{$message}`");
     }
