@@ -27,7 +27,11 @@ class CouldNotSendNotification extends \Exception
         $params = [];
         if ($result = json_decode($exception->getResponse()->getBody())) {
             $description = $result->description ?: $description;
-            $params = (array) $result->parameters;
+            if($result->parameters){
+                $params = (array) $result->parameters;
+            } else {
+                $params = [];
+            }
         }
 
         return (new CouldNotSendNotification("Telegram responded with an error `{$statusCode} - {$description}`"))->setParams($params);
