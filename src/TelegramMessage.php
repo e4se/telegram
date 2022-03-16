@@ -2,12 +2,16 @@
 
 namespace NotificationChannels\Telegram;
 
+use GuzzleHttp\Client as HttpClient;
+
 class TelegramMessage
 {
     /**
      * @var array Params payload.
      */
     public $payload = [];
+
+    public ?Telegram $telegram = null;
 
     public $successFunction;
     public $failureFunction;
@@ -33,11 +37,12 @@ class TelegramMessage
         return $this;
     }
 
-    public function success($response){
+    public function success($response)
+    {
         if ($this->successFunction instanceof \Closure)
             call_user_func($this->successFunction, $response);
     }
-    
+
     public function onFailure($function)
     {
         $this->failureFunction = $function;
@@ -45,7 +50,8 @@ class TelegramMessage
         return $this;
     }
 
-    public function failure($response){
+    public function failure($response)
+    {
         if ($this->failureFunction instanceof \Closure)
             call_user_func($this->failureFunction, $response);
     }
@@ -141,5 +147,14 @@ class TelegramMessage
     public function toArray()
     {
         return $this->payload;
+    }
+
+    public function setTelegramToken($token)
+    {
+        $this->telegram = new Telegram(
+            $token,
+            new HttpClient()
+        );
+        return $this;
     }
 }
