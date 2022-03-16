@@ -43,7 +43,7 @@ class TelegramChannel
             $message->to($to);
         }
 
-        if ($message->telegram) {
+        if (!empty($message->telegram)) {
             $this->telegram = $message->telegram;
         }
 
