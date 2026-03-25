@@ -19,7 +19,7 @@ class Telegram
      * @param null            $token
      * @param HttpClient|null $httpClient
      */
-    public function __construct($token = null, HttpClient $httpClient = null)
+    public function __construct($token = null, ?HttpClient $httpClient = null)
     {
         $this->token = $token;
 
