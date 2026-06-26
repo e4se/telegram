@@ -51,6 +51,9 @@ class TelegramChannel
             if (isset($message->payload['text']) && $message->payload['text']) {
                 $params = $message->toArray();
                 $response = $this->telegram->sendMessage($params);
+            } elseif (isset($message->payload['rich_message']) && $message->payload['rich_message']) {
+                $params = $message->toArray();
+                $response = $this->telegram->sendRichMessage($params);
             } elseif (isset($message->payload['latitude']) && isset($message->payload['longitude'])) {
                 $params = $message->toArray();
                 $response = $this->telegram->sendLocation($params);
