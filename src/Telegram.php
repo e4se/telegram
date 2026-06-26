@@ -28,7 +28,7 @@ class Telegram
 
     /**
      * Token getter
-     * 
+     *
      * @return string
      */
     public function getToken()
@@ -38,14 +38,14 @@ class Telegram
 
     /**
      * Token setter
-     * 
+     *
      * @param string
      */
     public function setToken($token)
     {
         $this->token = $token;
     }
-    
+
     /**
      * Get HttpClient.
      *
@@ -90,6 +90,36 @@ class Telegram
         return $this->sendRequest('sendMessage', $params);
     }
 
+    /**
+     * Send  rich message.
+     *
+     * <code>
+     * $params = [
+     *   'chat_id'                  => '',
+     *   'rich_message'             => '',
+     *   'disable_notification'     => '',
+     *   'reply_to_message_id'      => '',
+     *   'reply_markup'             => '',
+     * ];
+     * </code>
+     *
+     * @link https://core.telegram.org/bots/api#sendmessage
+     *
+     * @param array $params
+     *
+     * @var int|string $params ['chat_id']
+     * @var string      $params ['rich_message']
+     * @var bool       $params ['disable_notification']
+     * @var int        $params ['reply_to_message_id']
+     * @var string     $params ['reply_markup']
+     *
+     * @return mixed
+     */
+    public function sendRichMessage($params)
+    {
+        return $this->sendRequest('sendRichMessage', $params);
+    }
+
 
     /**
     * Send File as Image or Document
@@ -97,9 +127,9 @@ class Telegram
     * @param array $params
     * @param string $type
     * @param bool $multipart
-    * 
+    *
     * @return mixed
-    * 
+    *
     */
     public function sendFile($params, $type, $multipart = false)
     {
